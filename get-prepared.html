@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Ratchet template page</title>
+
+    <!-- Sets initial viewport load and disables zooming  -->
+    <meta name="viewport" content="initial-scale=1, maximum-scale=1">
+
+    <!-- Makes your prototype chrome-less once bookmarked to your phone's home screen -->
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+
+    <!-- Include the compiled Ratchet CSS -->
+    <link href="css\ratchet.min.css" rel="stylesheet">
+    <link href="css\ratchet-theme-ios.min.css" rel="stylesheet">
+
+  </head>
+  <body>
+
+    <!-- Make sure all your bars are the first things in your <body> -->
+    <header class="bar bar-nav">
+      <a class="icon icon-left-nav pull-left" href="index.html"></a>
+      <h1 class="title">Get Prepared View</h1>
+    </header>
+
+    <!-- Wrap all non-bar HTML in the .content div (this is actually what scrolls) -->
+    <div class="content">
+      <ul class="table-view">
+          <div class="results"></div>         
+      </ul>
+    </div>
+    <script src="https://code.jquery.com/jquery-2.1.4.min.js"></script>
+
+    <script>
+        $(function() {
+            // ID of the Google Spreadsheet
+            var spreadsheetID = "13mgj70xn9kRwZdNHqMyIxc08JnuQtBS7gz6PijZuKbE";
+
+            // Make sure it is public or set to Anyone with link can view 
+            var url = "https://spreadsheets.google.com/feeds/list/" + spreadsheetID + "/od6/public/values?alt=json";
+
+            $.getJSON(url, function(data) {
+
+                var entry = data.feed.entry[0];
+
+                $(entry).each(function(){
+                  
+                  var listName = this['gsx$task-list-name'].$t;
+                  var listDescription = this['gsx$task-list-description'].$t
+
+                  var html_1 = '<li class="table-view-cell"> <a class="navigate-right">';
+                  var html_2 = '</a> </li>';
+
+                  $('.results').append(html_1 + listName + listDescription + html_2);
+                });
+
+            });
+        });
+    </script>
+  </body>
+</html>
