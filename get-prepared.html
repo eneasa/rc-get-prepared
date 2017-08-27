@@ -35,10 +35,11 @@
     <script>
         $(function() {
 
-            var rows = GetGoogleSheetRowsByWorkSheetID(2);
-            $.when(rows).done(function() {
-
-              $(rows).each(function(){
+          var sheetData = GetGoogleSheetRowsByWorkSheetIDRequest(2);
+          
+          sheetData.then(
+            function(rows) {
+              $(rows).each(function() {
                 
                 var listName = this['gsx$task-list-name'].$t;
                 var listDescription = this['gsx$task-list-description'].$t
@@ -49,23 +50,30 @@
                 $('.results').append(html_1 + listName + listDescription + html_2);
                 
               });
-            });
+            }
+          );
+           
 
         });
         
         // this is the worksheet, the first worksheet has ID=2, second worksheet ID=3 and so on 
-        function GetGoogleSheetRowsByWorkSheetID(googleSheetNumber) {
+        function GetGoogleSheetRowsByWorkSheetIDRequest(googleSheetNumber) {
+          
+          var deferred = $.Deferred();
 
           // this is the sheet ID found in the URL
           var googleSheetID = "13mgj70xn9kRwZdNHqMyIxc08JnuQtBS7gz6PijZuKbE";
 
           var url = "https://spreadsheets.google.com/feeds/list/" + googleSheetID + "/" + googleSheetNumber + "/public/values?alt=json";
           
-          $.getJSON(url, function(data) {
+          $.getJSON(url).then(function(data) {
 
                 // data.deed.entry has all the rows
-                return data.feed.entry;
+                deferred.resolve(data.feed.entry);
           });
+
+          return deferred.promise();
+          
         }
 
     </script>
