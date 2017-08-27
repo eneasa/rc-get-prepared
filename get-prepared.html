@@ -35,7 +35,8 @@
     <script>
         $(function() {
 
-            GetGoogleSheetRowsByWorkSheetID(2, function(rows) {
+            var rows = GetGoogleSheetRowsByWorkSheetID(2);
+            $.when(rows).done(function() {
 
               $(rows).each(function(){
                 
@@ -48,8 +49,8 @@
                 $('.results').append(html_1 + listName + listDescription + html_2);
                 
               });
-              
             });
+
         });
         
         // this is the worksheet, the first worksheet has ID=2, second worksheet ID=3 and so on 
