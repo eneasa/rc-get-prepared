@@ -35,17 +35,19 @@
     <script>
         $(function() {
 
-            var rows = GetGoogleSheetRowsByWorkSheetID(2);
+            GetGoogleSheetRowsByWorkSheetID(2, function(rows) {
 
-            $(rows).each(function(){
-              
-              var listName = this['gsx$task-list-name'].$t;
-              var listDescription = this['gsx$task-list-description'].$t
+              $(rows).each(function(){
+                
+                var listName = this['gsx$task-list-name'].$t;
+                var listDescription = this['gsx$task-list-description'].$t
 
-              var html_1 = '<li class="table-view-cell"> <a class="navigate-right">';
-              var html_2 = '</a> </li>';
+                var html_1 = '<li class="table-view-cell"> <a class="navigate-right">';
+                var html_2 = '</a> </li>';
 
-              $('.results').append(html_1 + listName + listDescription + html_2);
+                $('.results').append(html_1 + listName + listDescription + html_2);
+                
+              });
               
             });
         });
