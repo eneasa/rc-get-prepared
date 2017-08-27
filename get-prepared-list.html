@@ -41,14 +41,15 @@
           sheetData.then(
             function(rows) {
               $(rows).each(function() {
-                
+
+                var getPreparedItem = this['gsx$get-prepared-item'].$t + ' ';                
                 var listName = this['gsx$title'].$t + ' ';
                 var listDescription = this['gsx$summary'].$t + ' ';
 
                 var html_1 = '<li class="table-view-cell"> <a class="navigate-right">';
                 var html_2 = '</a> </li>';
 
-                $('.results').append(html_1 + listName + listDescription + html_2);
+                $('.results').append(html_1 + getPreparedItem + listName + html_2);
                 
               });
             }
