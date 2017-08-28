@@ -36,25 +36,22 @@
     <script>
         $(function() {
 
-          var sheetData = GetGoogleSheetRowsByWorkSheetIDRequest(2);
-          
-          sheetData.then(
-            function(rows) {
-              $(rows).each(function() {
-                
-                var listName = this['gsx$title'].$t + ' ';
-                var listDescription = this['gsx$summary'].$t + ' ';
+          //var sheetData = GetGoogleSheetRowsByWorkSheetIDRequest(2);
+          GetGoogleSheetRowsByWorkSheetIDRequest(2).then(function(data) {
 
-                var html_1 = '<li class="table-view-cell"> <a class="navigate-right" href="get-prepared-list.html">';
-                var html_2 = '</a> </li>';
+            var rows = data.feed.entry;
+            $(rows).each(function() {
+              
+              var listName = this['gsx$title'].$t + ' ';
+              var listDescription = this['gsx$summary'].$t + ' ';
 
-                $('.results').append(html_1 + listName + listDescription + html_2);
-                
-              });
-            }
-          );
-           
+              var html_1 = '<li class="table-view-cell"> <a class="navigate-right" href="get-prepared-list.html">';
+              var html_2 = '</a> </li>';
 
+              $('.results').append(html_1 + listName + listDescription + html_2);
+              
+            });
+          });
         });
 
     </script>
