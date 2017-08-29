@@ -9,3 +9,25 @@ function GetGoogleSheetRowsByWorkSheetIDRequest(googleSheetNumber) {
     return $.getJSON(url);
     
 }
+
+// this is the worksheet, the first worksheet has ID=2, second worksheet ID=3 and so on 
+function GetKenticoCloudRows(path) {
+    
+    // this is the sheet ID found in the URL
+    var projectID = "112fe4bd-5bac-41f2-8ba1-719f736a3017";
+
+    var url = "https://deliver.kenticocloud.com/" + projectID + "/items/" + path + "";
+    
+    return $.getJSON(url);
+    
+}
+
+function getParameterByName(name, url) {
+    if (!url) url = window.location.href;
+    name = name.replace(/[\[\]]/g, "\\$&");
+    var regex = new RegExp("[?&]" + name + "(=([^&#]*)|&|#|$)"),
+        results = regex.exec(url);
+    if (!results) return null;
+    if (!results[2]) return '';
+    return decodeURIComponent(results[2].replace(/\+/g, " "));
+}
