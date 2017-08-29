@@ -12,25 +12,27 @@
     <meta name="apple-mobile-web-app-status-bar-style" content="black">
 
     <!-- Include the compiled Ratchet CSS -->
-    <link href="css\ratchet.css" rel="stylesheet">
+    <link href="css\ratchet.min.css" rel="stylesheet">
+
   </head>
   <body>
 
     <!-- Make sure all your bars are the first things in your <body> -->
     <header class="bar bar-nav">
       <a class="icon icon-left-nav pull-left" href="" onclick="goBack()"></a>
-      <h1 class="title">Main Category View</h1>
+      <h1 class="title">Category View</h1>
     </header>
     <!-- Wrap all non-bar HTML in the .content div (this is actually what scrolls) -->
     <div class="content">
       <div class="content-padded">
-        <img id="icon" src="" style="width: 75px; height: 75px">
+        <img id="icon" src="" style="width: 75px">
         <h2 id="title"></h2>
-        <p id="summary"> </p>
+        <p id="summary">     
+        </p>
       </div>
 
       <ul class="table-view">
-          <div class="results"> </div>         
+          <div class="results"></div>         
       </ul>
     </div>
 
@@ -52,13 +54,12 @@
 
           for(var property in subItems) {
            
-            var subItemTitle =  "<h5>" + subItems[property].elements.title.value + "</h5>";
-            var subItemSummary = "<p>" + subItems[property].elements.summary.value + "</p>";            
+            var subItemTitle = subItems[property].elements.title.value;       
 
-            var html_1 = '<li class="table-view-cell"> <a class="navigate-right" href="category.html?path='+ property +'">';
+            var html_1 = '<li class="table-view-cell"> <a class="navigate-right" href="task.html?path='+ property +'">';
             var html_2 = '</a> </li>';
 
-            $('.results').append(html_1 + subItemTitle + subItemSummary + html_2);
+            $('.results').append(html_1 + subItemTitle + html_2);
 
           }
         });
