@@ -19,7 +19,7 @@
 
     <!-- Make sure all your bars are the first things in your <body> -->
     <header class="bar bar-nav">
-      <h1 class="title">Home View</h1>
+      <h1 class="title">Main Category View</h1>
     </header>
     <!-- Wrap all non-bar HTML in the .content div (this is actually what scrolls) -->
     <div class="content">
@@ -39,7 +39,9 @@
     <script>
       $(function() {
 
-        GetKenticoCloudRows('home').then(function(data) {
+        var queryString = getParameterByName("path");
+
+        GetKenticoCloudRows(queryString).then(function(data) {
 
           var landing = data.item;
           $("#title").text(landing.elements.title.value);
