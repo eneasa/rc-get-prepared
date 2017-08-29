@@ -24,6 +24,7 @@
     <!-- Wrap all non-bar HTML in the .content div (this is actually what scrolls) -->
     <div class="content">
       <div class="content-padded">
+        <p><img src="http://placehold.it/42x42"></p>
         <h2 id="title"></h2>
         <p id="summary">     
         </p>
@@ -49,13 +50,13 @@
 
           for(var property in subItems) {
            
-            var subItemTitle = subItems[property].elements.title.value;
-            var subItemSummary = subItems[property].elements.summary.value;            
+            var subItemTitle = "<h5>" + subItems[property].elements.title.value + "</h5>";
+            var subItemSummary = "<p>" + subItems[property].elements.summary.value + "</p>";            
 
             var html_1 = '<li class="table-view-cell"> <a class="navigate-right" href="main-category.html?path='+ property +'">';
             var html_2 = '</a> </li>';
 
-            $('.results').append(html_1 + subItemTitle + "<br />" + subItemSummary + html_2);
+            $('.results').append(html_1 + subItemTitle + subItemSummary + html_2);
 
           }
         });
