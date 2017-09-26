@@ -37,14 +37,14 @@
     <script>
       $(function() {
 
-        var queryString = getParameterByName("path");
+        var queryString = getParameterByName("task-name");
 
-        GetKenticoCloudRows(queryString).then(function(data) {
+        GetKenticoCloudRowsByPath(queryString).then(function(data) {
 
             var landing = data.item;
             $("#title").text(landing.elements.title.value);
-            $("#summary").html(landing.elements.summary.value);
-            $('#icon').prop('src', landing.elements.icon.value[0].url);
+            $("#summary").html(landing.elements.description.value);
+            $('#icon').prop('src', GetImagePath(landing.elements.image.value));
 
         });
       });
