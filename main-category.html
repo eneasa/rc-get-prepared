@@ -92,28 +92,22 @@
 
                 for(var subCategory of subCategories) {
            
-                    var subCategoryTitle = "<h2>" + subCategory.elements.title.value + "</h2>";  
+                    var subCategoryTitle = "<br /><br /><h2>" + subCategory.elements.title.value + "</h2>";  
                     htmlString += subCategoryTitle;
-
                     htmlString += '<ul class="table-view">';
+                    
                     for(var subCategoryTask of subCategory.elements.tasks.value) {      
-                        //var html_1 = '<li class="table-view-cell"> <a class="navigate-right" href="task.html?task-name='+ subCategoryTask +'">';
-                        //var html_2 = '</a> </li>';
 
-                        GetKenticoCloudRowsByPath(subCategoryTask).then(function (data) {
-                        
-                            var task = data.item;                    
+                        var task = tasks[subCategoryTask];                    
 
-                            var taskHtml_1 = '<li class="table-view-cell"> <a class="navigate-right" href="task.html?task-name='+ subCategoryTask +'">';
-                            var taskHtml_2 = '</a> </li>';
+                        var taskHtml_1 = '<li class="table-view-cell"> <a class="navigate-right" href="task.html?task-name='+ subCategoryTask +'">';
+                        var taskHtml_2 = '</a> </li>';
 
-                            htmlString += taskHtml_1 + task.elements.title.value + task.elements.description.value + taskHtml_2;
-                        });
+                        htmlString += taskHtml_1 + task.elements.title.value + task.elements.description.value + taskHtml_2;
 
-
-                        htmlString += html_1 + subCategoryTask + html_2;
                     }
                     htmlString += "</ul>";
+                   
                 }
                 $('.resultsSubCategories').append(htmlString);
 
