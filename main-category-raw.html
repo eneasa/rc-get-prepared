@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <title>RC Get Prepared</title>
+
+    <!-- Sets initial viewport load and disables zooming  -->
+    <meta name="viewport" content="initial-scale=1, maximum-scale=1">
+
+    <!-- Makes your prototype chrome-less once bookmarked to your phone's home screen -->
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+
+    <!-- Include the compiled Ratchet CSS -->
+    <link href="css\ratchet.css" rel="stylesheet">
+</head>
+
+<body>
+
+
+        <div class="content-padded">
+            <div class="resultsSubCategories"> </div>
+        </div>
+
+
+    <script src="https://code.jquery.com/jquery-2.1.4.min.js"></script>
+    <script src="app.js"></script>
+    <script>
+        $(function () {
+
+            //PopulateRecommendedTasks();
+
+            PopulateAllSubCategories();
+
+        });
+
+        function PopulateRecommendedTasks() {
+            var mainCategoryName = getParameterByName("category-name");
+
+            GetKenticoCloudRowsByPath(mainCategoryName).then(function (data) {
+
+                var mainCategory = data.item;
+
+                var recommendedTasks = data.modular_content;
+                for (var recommendedTaskName in recommendedTasks) {
+
+                    var subItemTitle = "" + recommendedTasks[recommendedTaskName].elements.title.value + CSVSEPERATOR;
+                    var subItemSummary = "" + recommendedTasks[recommendedTaskName].elements.description.value + CSVSEPERATOR;
+
+                    var html_2 = '<br />';
+
+                    $('.results').text(html_1 + subItemTitle + subItemSummary + html_2);
+
+                }
+            });
+        }
+
+        function PopulateAllSubCategories() {
+            
+
+            GetKenticoCloudRowsbyType("sub_category").then(function (data) {            
+
+                var subCategories = data.items;
+                var tasks = data.modular_content;
+
+                var htmlString = "[" + BREAKLINE;
+                var htmlString = " {" + BREAKLINE;
+
+                for(var subCategory of subCategories) {
+           
+                    for(var subCategoryTask of subCategory.elements.tasks.value) {  
+                        var task = tasks[subCategoryTask];  
+
+                        htmlString += "  " + LABEL_ID;
+                        htmlString += subCategory.elements.title.value;
+                        htmlString += task.elements.title.value + CSVSEPERATOR  + htmlEscape(task.elements.description.value) ;
+                        htmlString += "<br />";
+                    }
+                   
+                }
+                $('.resultsSubCategories').append(htmlString);
+
+               
+            });
+        }
+    </script>
+
+
+</body>
+</html>

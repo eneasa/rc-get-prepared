@@ -29,6 +29,10 @@
         <h2 id="title"></h2>
         <p id="summary">     
         </p>
+        <br/>
+        <br/>
+        <h2>Check lists</h2>
+        <div class="results"> </div>
       </div>
     </div>
 
@@ -46,6 +50,12 @@
             $("#summary").html(landing.elements.description.value);
             $('#icon').prop('src', GetImagePath(landing.elements.image.value));
 
+            var recommendedTasksCheckLists = data.modular_content;
+                for (var recommendedTaskName in recommendedTasksCheckLists) {
+
+                    var checkList = "<p>" + recommendedTasksCheckLists[recommendedTaskName].elements.title.value + "</p>";
+                    $('.results').append(checkList);
+                }
         });
       });
     </script>

@@ -47,6 +47,8 @@
     <script src="https://code.jquery.com/jquery-2.1.4.min.js"></script>
     <script src="app.js"></script>
     <script>
+        var RECOMMENDED_TASKS;
+
         $(function () {
 
             PopulateRecommendedTasks();
@@ -74,8 +76,9 @@
                     var html_1 = '<li class="table-view-cell"> <a class="navigate-right" href="task.html?task-name=' + recommendedTasks[recommendedTaskName].system.codename + '">';
                     var html_2 = '</a> </li>';
 
-                    $('.results').append(html_1 + subItemTitle + subItemSummary + html_2);
+                    $('.results').append(html_1 + subItemTitle  + html_2);
 
+                    RECOMMENDED_TASKS += recommendedTasks[recommendedTaskName].system.codename + " ";
                 }
             });
         }
@@ -96,15 +99,17 @@
                     htmlString += subCategoryTitle;
                     htmlString += '<ul class="table-view">';
                     
-                    for(var subCategoryTask of subCategory.elements.tasks.value) {      
+                    for(var subCategoryTaskCodeName of subCategory.elements.tasks.value) {  
 
-                        var task = tasks[subCategoryTask];                    
+                        if (RECOMMENDED_TASKS.indexOf(subCategoryTaskCodeName) == -1) {   
 
-                        var taskHtml_1 = '<li class="table-view-cell"> <a class="navigate-right" href="task.html?task-name='+ subCategoryTask +'">';
-                        var taskHtml_2 = '</a> </li>';
+                            var task = tasks[subCategoryTaskCodeName];                    
 
-                        htmlString += taskHtml_1 + task.elements.title.value + task.elements.description.value + taskHtml_2;
+                            var taskHtml_1 = '<li class="table-view-cell"> <a class="navigate-right" href="task.html?task-name='+ subCategoryTaskCodeName +'">';
+                            var taskHtml_2 = '</a> </li>';
 
+                            htmlString += taskHtml_1 + task.elements.title.value  + taskHtml_2;
+                        }
                     }
                     htmlString += "</ul>";
                    

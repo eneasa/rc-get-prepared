@@ -1,3 +1,11 @@
+var CSVSEPERATOR = '|';
+var BREAKLINE = '<br />';
+
+var LABEL_ID = DoubleQuote("id") + ": ";
+var LABEL_SUBCATEGORY = DoubleQuote("subCategory") + ": ";
+var LABEL_TASKNAME = DoubleQuote("taskName") + ": ";
+var LABEL_TASKDESC = DoubleQuote("taskDesc") + ": ";
+
 // this is the worksheet, the first worksheet has ID=2, second worksheet ID=3 and so on 
 function GetGoogleSheetRowsByWorkSheetIDRequest(googleSheetNumber) {
     
@@ -53,5 +61,20 @@ function GetImagePath(imageField){
 
     var defaultImage = "http://placehold.it/42x42"
     return imageField[0] ? imageField[0].url : defaultImage;
-    
+
+}
+
+function htmlEscape(str) {
+    return str
+        .replace(/&/g, '&amp;')
+        .replace(/"/g, '&quot;')
+        .replace(/'/g, '&#39;')
+        .replace(/</g, '&lt;')
+        .replace('|', ' ')
+        .replace(/>/g, '&gt;');
+}
+
+
+function DoubleQuote(str) {
+    return "\"" + str + "\"";  
 }
