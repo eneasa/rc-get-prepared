@@ -29,6 +29,10 @@
         <h2 id="title"></h2>
         <p id="summary">     
         </p>
+        <br/>
+        <br/>
+        <h2>Check lists</h2>
+        <div class="results"> </div>
       </div>
     </div>
 
@@ -37,15 +41,21 @@
     <script>
       $(function() {
 
-        var queryString = getParameterByName("path");
+        var queryString = getParameterByName("task-name");
 
-        GetKenticoCloudRows(queryString).then(function(data) {
+        GetKenticoCloudRowsByPath(queryString).then(function(data) {
 
             var landing = data.item;
             $("#title").text(landing.elements.title.value);
-            $("#summary").html(landing.elements.summary.value);
-            $('#icon').prop('src', landing.elements.icon.value[0].url);
+            $("#summary").html(landing.elements.description.value);
+            $('#icon').prop('src', GetImagePath(landing.elements.image.value));
 
+            var recommendedTasksCheckLists = data.modular_content;
+                for (var recommendedTaskName in recommendedTasksCheckLists) {
+
+                    var checkList = "<p>" + recommendedTasksCheckLists[recommendedTaskName].elements.title.value + "</p>";
+                    $('.results').append(checkList);
+                }
         });
       });
     </script>

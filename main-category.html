@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html>
-  <head>
+
+<head>
     <meta charset="utf-8">
     <title>RC Get Prepared</title>
 
@@ -13,56 +14,113 @@
 
     <!-- Include the compiled Ratchet CSS -->
     <link href="css\ratchet.css" rel="stylesheet">
-  </head>
-  <body>
+</head>
+
+<body>
 
     <!-- Make sure all your bars are the first things in your <body> -->
     <header class="bar bar-nav">
-      <a class="icon icon-left-nav pull-left" href="" onclick="goBack()"></a>
-      <h1 class="title">Main Category View</h1>
+        <a class="icon icon-left-nav pull-left" href="" onclick="goBack()"></a>
+        <h1 class="title">Main Category View</h1>
     </header>
     <!-- Wrap all non-bar HTML in the .content div (this is actually what scrolls) -->
     <div class="content">
-      <div class="content-padded">
-        <img id="icon" src="" style="width: 75px; height: 75px">
-        <h2 id="title"></h2>
-        <p id="summary"> </p>
-      </div>
+        <div class="content-padded">
+            <img id="icon" src="" style="width: 75px; height: 75px">
+            <h2 id="title"></h2>
+            <div id="summary"> </div>
+        </div>
+        <br/>
+        <br/>
+        <div class="content-padded">
+            <h2>Recommended Tasks</h2>
+            <ul class="table-view">
+                <div class="results"> </div>
+            </ul>
+        </div>
 
-      <ul class="table-view">
-          <div class="results"> </div>         
-      </ul>
+        <div class="content-padded">
+            <div class="resultsSubCategories"> </div>
+        </div>
     </div>
 
     <script src="https://code.jquery.com/jquery-2.1.4.min.js"></script>
     <script src="app.js"></script>
     <script>
-      $(function() {
+        var RECOMMENDED_TASKS;
 
-        var queryString = getParameterByName("path");
+        $(function () {
 
-        GetKenticoCloudRows(queryString).then(function(data) {
+            PopulateRecommendedTasks();
 
-          var landing = data.item;
-          $("#title").text(landing.elements.title.value);
-          $("#summary").text(landing.elements.summary.value);
-          $('#icon').prop('src', landing.elements.icon.value[0].url);
+            PopulateAllSubCategories();
 
-          var subItems = data.modular_content;          
-
-          for(var property in subItems) {
-           
-            var subItemTitle =  "<h5>" + subItems[property].elements.title.value + "</h5>";
-            var subItemSummary = "<p>" + subItems[property].elements.summary.value + "</p>";            
-
-            var html_1 = '<li class="table-view-cell"> <a class="navigate-right" href="category.html?path='+ property +'">';
-            var html_2 = '</a> </li>';
-
-            $('.results').append(html_1 + subItemTitle + subItemSummary + html_2);
-
-          }
         });
-      });
+
+        function PopulateRecommendedTasks() {
+            var mainCategoryName = getParameterByName("category-name");
+
+            GetKenticoCloudRowsByPath(mainCategoryName).then(function (data) {
+
+                var mainCategory = data.item;
+                $("#title").text(mainCategory.elements.title.value);
+                $("#summary").html(mainCategory.elements.description.value);
+                $('#icon').prop('src', GetImagePath(mainCategory.elements.image.value));
+
+                var recommendedTasks = data.modular_content;
+                for (var recommendedTaskName in recommendedTasks) {
+
+                    var subItemTitle = "<h5>" + recommendedTasks[recommendedTaskName].elements.title.value + "</h5>";
+                    var subItemSummary = "<p>" + recommendedTasks[recommendedTaskName].elements.description.value + "</p>";
+
+                    var html_1 = '<li class="table-view-cell"> <a class="navigate-right" href="task.html?task-name=' + recommendedTasks[recommendedTaskName].system.codename + '">';
+                    var html_2 = '</a> </li>';
+
+                    $('.results').append(html_1 + subItemTitle  + html_2);
+
+                    RECOMMENDED_TASKS += recommendedTasks[recommendedTaskName].system.codename + " ";
+                }
+            });
+        }
+
+        function PopulateAllSubCategories() {
+            
+
+            GetKenticoCloudRowsbyType("sub_category").then(function (data) {
+
+                var subCategories = data.items;
+                var tasks = data.modular_content;
+
+                var htmlString = "";
+
+                for(var subCategory of subCategories) {
+           
+                    var subCategoryTitle = "<br /><br /><h2>" + subCategory.elements.title.value + "</h2>";  
+                    htmlString += subCategoryTitle;
+                    htmlString += '<ul class="table-view">';
+                    
+                    for(var subCategoryTaskCodeName of subCategory.elements.tasks.value) {  
+
+                        if (RECOMMENDED_TASKS.indexOf(subCategoryTaskCodeName) == -1) {   
+
+                            var task = tasks[subCategoryTaskCodeName];                    
+
+                            var taskHtml_1 = '<li class="table-view-cell"> <a class="navigate-right" href="task.html?task-name='+ subCategoryTaskCodeName +'">';
+                            var taskHtml_2 = '</a> </li>';
+
+                            htmlString += taskHtml_1 + task.elements.title.value  + taskHtml_2;
+                        }
+                    }
+                    htmlString += "</ul>";
+                   
+                }
+                $('.resultsSubCategories').append(htmlString);
+
+               
+            });
+        }
     </script>
-  </body>
+
+
+</body>
 </html>

@@ -40,23 +40,19 @@
     <script>
       $(function() {
 
-        GetKenticoCloudRows('home').then(function(data) {
+        GetKenticoCloudRowsbyType('main_category').then(function(data) {
 
-          var landing = data.item;
-          $("#title").text(landing.elements.title.value);
-          $("#summary").text(landing.elements.summary.value);
+          var mainCategories = data.items;          
 
-          var subItems = data.modular_content;          
-
-          for(var property in subItems) {
+          for(var mainCategory of mainCategories) {
            
-            var subItemTitle = "<h5>" + subItems[property].elements.title.value + "</h5>";
-            var subItemSummary = "<p>" + subItems[property].elements.summary.value + "</p>";            
+            var subItemTitle = "<h5>" + mainCategory.elements.title.value + "</h5>";
+            var subItemSummary = "<p>" + mainCategory.elements.description.value + "</p>";            
 
-            var html_1 = '<li class="table-view-cell"> <a class="navigate-right" href="main-category.html?path='+ property +'">';
+            var html_1 = '<li class="table-view-cell"> <a class="navigate-right" href="main-category.html?category-name='+ mainCategory.system.codename +'">';
             var html_2 = '</a> </li>';
 
-            $('.results').append(html_1 + subItemTitle + subItemSummary + html_2);
+            $('.results').append(html_1 + subItemTitle  + html_2);
 
           }
         });
